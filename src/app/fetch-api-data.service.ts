@@ -126,7 +126,7 @@ export class FetchApiDataService {
     let user = localStorage.getItem('user');
     return this.http.delete<HttpResponse<any>>(apiUrl + 'users/' + user, {headers: new HttpHeaders(
       {
-        Authorization: 'Bearer' + token,
+        Authorization: 'Bearer ' + token,
       })}).pipe(
         map(this.extractResponseData),
         catchError(this.handleError)

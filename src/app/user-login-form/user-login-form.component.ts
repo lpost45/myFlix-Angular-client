@@ -18,7 +18,7 @@ import { FetchApiDataService } from '../fetch-api-data.service';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
+    MatButtonModule
   ],
   templateUrl: './user-login-form.component.html',
   styleUrl: './user-login-form.component.scss'
