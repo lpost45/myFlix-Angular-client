@@ -15,17 +15,31 @@ export class FetchApiDataService {
   }
 
  // Making the api call for the user registration endpoint
-  public userRegistration(userDetails: any): Observable<any> {
-    console.log(userDetails);
-    return this.http.post(apiUrl + 'users', userDetails).pipe(
-    catchError(this.handleError)
+ public userRegistration(userDetails: any): Observable<any> {
+  console.log('Attempting to register with:', userDetails);
+
+  return this.http
+    .post(apiUrl + 'users', userDetails, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    })
+    .pipe(
+      map((response) => {
+        console.log('Registration successful:', response);
+        return response;
+      }),
+      catchError(this.handleError),
     );
   }
 
   public userLogin(userDetails: any): Observable<any> {
-    console.log(userDetails);
     return this.http.post(apiUrl + 'login', userDetails).pipe(
-      catchError(this.handleError)
+      map((response: any) => {
+        if (response.token) {
+          localStorage.setItem('token', response.token); // Store token after login
+        }
+        return response;
+      }),
+      catchError(this.handleError),
     );
   }
 
