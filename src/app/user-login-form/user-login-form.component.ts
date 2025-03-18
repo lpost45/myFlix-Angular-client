@@ -25,7 +25,7 @@ import { FetchApiDataService } from '../fetch-api-data.service';
 })
 export class UserLoginFormComponent implements OnInit {
 
-  @Input() userData = { Username: '', Password: '' };
+  @Input() userData = { Name: '', Password: '' };
 
   constructor(
     public fetchApiData: FetchApiDataService,
@@ -39,7 +39,7 @@ export class UserLoginFormComponent implements OnInit {
   loginUser(): void {
     this.fetchApiData.userLogin(this.userData).subscribe((result) => {
       localStorage.setItem('token', result.token); // Store the token in localStorage
-      localStorage.setItem('user', result.user.Username); // Store the username in localStorage
+      localStorage.setItem('user', result.user.Name); // Store the username in localStorage
       // Logic for a successful user login goes here! (To be implemented)
       this.dialogRef.close(); // This will close the modal on success!
       this.snackBar.open(result, 'OK', {

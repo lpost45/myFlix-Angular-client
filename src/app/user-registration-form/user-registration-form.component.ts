@@ -27,7 +27,7 @@ import { FetchApiDataService } from '../fetch-api-data.service';
 })
 export class UserRegistrationFormComponent implements OnInit {
 
-  @Input() userData = { Username: '', Password: '', Email: '', Birthday: '' };
+  @Input() userData = { Name: '', Password: '', Email: '', Birthday: '' };
 
 constructor(
     public fetchApiData: FetchApiDataService,
