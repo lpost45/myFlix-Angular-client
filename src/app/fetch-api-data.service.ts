@@ -9,6 +9,9 @@ const apiUrl = 'https://logan-myflix-30a490a6c5c0.herokuapp.com/';
   providedIn: 'root'
 })
 export class FetchApiDataService {
+  getUser(user: string): Observable<any> {
+    return this.http.get<any>(`/api/users/${user}`);
+  }
   // Inject the HttpClient module to the constructor params
  // This will provide HttpClient to the entire class, making it available via this.http
   constructor(private http: HttpClient) {
@@ -110,7 +113,7 @@ export class FetchApiDataService {
       );
   }
 
-  public addUserFavoriteMovies(movieId: string) {
+  public addUserFavoriteMovies(userId: string | null, movieId: string) {
     const token = localStorage.getItem('token');
     let user = localStorage.getItem('user');
     return this.http.put<HttpResponse<any>>(apiUrl + 'users/' + user + '/favorites/' + movieId, {headers: new HttpHeaders(
@@ -122,7 +125,7 @@ export class FetchApiDataService {
       );
   }
 
-  public editUser(userDetails: any): Observable<any> {
+  public editUser(userDetails: any, userData: { Name: string; Password: string; Email: string; Birthday: string; }): Observable<any> {
     const token = localStorage.getItem('token');
     let user = localStorage.getItem('user');
     return this.http.put<HttpResponse<any>>(apiUrl + 'users/' + user, userDetails, {headers: new HttpHeaders(
@@ -147,7 +150,7 @@ export class FetchApiDataService {
       );
   }
 
-  public deleteUserFavoriteMovie(movieId: string) {
+  public deleteUserFavoriteMovie(userId: string, movieId: string) {
     const token = localStorage.getItem('token');
     let user = localStorage.getItem('user');
     return this.http.delete<HttpResponse<any>>(apiUrl + 'users/' + user + '/favorites/' + movieId, {headers: new HttpHeaders(
