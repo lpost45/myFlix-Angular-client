@@ -49,6 +49,14 @@ export class UserLoginFormComponent implements OnInit {
       this.snackBar.open(`Login success, Welcome ${result.user.name}`, "OK", {
         duration: 2000
       });
+      let user = {
+        ...result.user,
+        id: result.user._id,
+        password: this.userData.Password,
+        token: result.token
+      }
+      localStorage.setItem('user', JSON.stringify(user));
+      this.router.navigate(['movies']);
     }, (result) => {
       this.snackBar.open(`Login failed`, 'OK', {
         duration: 2000
