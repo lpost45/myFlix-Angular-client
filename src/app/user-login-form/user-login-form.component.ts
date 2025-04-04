@@ -19,13 +19,12 @@ import { Router } from '@angular/router';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   templateUrl: './user-login-form.component.html',
-  styleUrl: './user-login-form.component.scss'
+  styleUrl: './user-login-form.component.scss',
 })
 export class UserLoginFormComponent implements OnInit {
-
   @Input() userData = { Name: '', Password: '' };
 
   constructor(
@@ -33,35 +32,37 @@ export class UserLoginFormComponent implements OnInit {
     public dialogRef: MatDialogRef<UserLoginFormComponent>,
     public snackBar: MatSnackBar,
     public router: Router
-  ) { }
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   // This is the function responsible for sending the form inputs to the backend
   loginUser(): void {
-    this.fetchApiData.userLogin(this.userData).subscribe((result) => {
-      localStorage.setItem('token', result.token); // Store the token in localStorage
-      localStorage.setItem('user', result.user.Name); // Store the username in localStorage
-      // Logic for a successful user login goes here! (To be implemented)
-      this.dialogRef.close(); // This will close the modal on success!
-      this.router.navigate(['movies']);
-      this.snackBar.open(`Login success, Welcome ${result.user.name}`, "OK", {
-        duration: 2000
-      });
-      let user = {
-        ...result.user,
-        id: result.user._id,
-        password: this.userData.Password,
-        token: result.token
+    this.fetchApiData.userLogin(this.userData).subscribe(
+      (result) => {
+        const user = {
+          ...result.user,
+          id: result.user._id,
+          password: this.userData.Password,
+          token: result.token,
+        };
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('user', JSON.stringify(user));
+        this.dialogRef.close();
+        this.router.navigate(['movies']);
+        this.snackBar.open(`Login success, Welcome ${result.user.Name}`, 'OK', {
+          duration: 2000,
+        });
+      },
+      (error) => {
+        // Handle login failure
+        console.error('Login failed:', error);
+        this.snackBar.open(
+          error.error?.message || 'Login failed. Please try again.',
+          'OK',
+          { duration: 2000 }
+        );
       }
-      localStorage.setItem('user', JSON.stringify(user));
-      this.router.navigate(['movies']);
-    }, (result) => {
-      this.snackBar.open(`Login failed`, 'OK', {
-        duration: 2000
-      });
-    });
+    );
   }
-
 }

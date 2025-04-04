@@ -10,14 +10,9 @@ import { MessageBoxComponent } from '../message-box/message-box.component';
 
 @Component({
   selector: 'app-movie-card',
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatDialogContent,
-    MatIconModule
-  ],
+  imports: [CommonModule, MatCardModule, MatDialogContent, MatIconModule],
   templateUrl: './movie-card.component.html',
-  styleUrls: ['./movie-card.component.scss']
+  styleUrls: ['./movie-card.component.scss'],
 })
 export class MovieCardComponent {
   movies: any[] = [];
@@ -26,7 +21,7 @@ export class MovieCardComponent {
     public snackBar: MatSnackBar,
     public router: Router,
     public dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getMovies();
@@ -34,6 +29,7 @@ export class MovieCardComponent {
 
   getMovies(): void {
     this.fetchApiData.getAllMovies().subscribe((resp: any) => {
+      console.log('API Response:', resp);
       this.movies = resp;
     });
   }
@@ -42,7 +38,7 @@ export class MovieCardComponent {
     const user = localStorage.getItem('user') || '';
     this.fetchApiData.addUserFavoriteMovies(user, movieId).subscribe(() => {
       this.snackBar.open('Added to favorites', 'OK', {
-        duration: 2000
+        duration: 2000,
       });
     });
   }
@@ -54,33 +50,42 @@ export class MovieCardComponent {
   }
 
   // This function will open the movie details dialog
-  openDetailsDialog(title: string, description: string, imagePath: string): void {
+  openDetailsDialog(
+    title: string,
+    description: string,
+    imagePath: string
+  ): void {
     this.dialog.open(MessageBoxComponent, {
       data: { title, description, imagePath },
-      width: '500px'
+      width: '500px',
     });
   }
 
   // This function will open the genre details dialog
-  openGenreDialog(name: string, description: string): void {  
+  openGenreDialog(name: string, description: string): void {
     this.dialog.open(MessageBoxComponent, {
       data: { name, description },
-      width: '500px'
+      width: '500px',
     });
   }
 
   // This function will open the director details dialog
-  openDirectorDialog(name: string, bio: string, birth: string, death: string): void {
+  openDirectorDialog(
+    name: string,
+    bio: string,
+    birth: string,
+    death: string
+  ): void {
     this.dialog.open(MessageBoxComponent, {
       data: { name, bio, birth, death },
-      width: '500px'
+      width: '500px',
     });
   }
 
   // This function will open the user profile dialog
   openProfileDialog(): void {
     this.dialog.open(MessageBoxComponent, {
-      width: '500px'
+      width: '500px',
     });
   }
 }
