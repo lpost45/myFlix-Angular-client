@@ -36,8 +36,7 @@ throw new Error('Method not implemented.');
     @Inject(MAT_DIALOG_DATA)
     public data: {
       title: string;
-      description: string;
-      imagePath: string;
+      content: string;
     }
   ) { }
 

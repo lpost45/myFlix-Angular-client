@@ -36,11 +36,26 @@ export class MovieCardComponent {
 
   addFavoriteMovie(movieId: string): void {
     const user = localStorage.getItem('user') || '';
-    this.fetchApiData.addUserFavoriteMovies(user, movieId).subscribe(() => {
-      this.snackBar.open('Added to favorites', 'OK', {
-        duration: 2000,
+    this.fetchApiData
+      .addUserFavoriteMovies(user, movieId)
+      .subscribe(() => {
+        this.getMovies();
+        this.snackBar.open('Added to favorites', 'OK', {
+          duration: 2000,
+        });
       });
-    });
+  }
+
+  removeFavoriteMovie(movieId: string): void {
+    const user = localStorage.getItem('user') || '';
+    this.fetchApiData
+      .deleteUserFavoriteMovie(user, movieId)
+      .subscribe(() => {
+        this.getMovies();
+        this.snackBar.open('Removed from favorites', 'OK', {
+          duration: 2000,
+        });
+      });
   }
 
   openSnackBar(message: string, action: string): void {
@@ -62,9 +77,12 @@ export class MovieCardComponent {
   }
 
   // This function will open the genre details dialog
-  openGenreDialog(name: string, description: string): void {
+  openGenreDialog(
+    title: string,
+    description: string,
+  ): void {
     this.dialog.open(MessageBoxComponent, {
-      data: { name, description },
+      data: { title, description },
       width: '500px',
     });
   }
@@ -74,7 +92,7 @@ export class MovieCardComponent {
     name: string,
     bio: string,
     birth: string,
-    death: string
+    death: string,
   ): void {
     this.dialog.open(MessageBoxComponent, {
       data: { name, bio, birth, death },
