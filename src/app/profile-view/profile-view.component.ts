@@ -23,77 +23,77 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./profile-view.component.css']
 })
 export class ProfileViewComponent implements OnInit {
-  movies: any[] = [];
+  userData: any = {};
   favoriteMovies: any[] = [];
-  user: any;
-
-  @Input() userData = { Name: '', Password: '', Email: '', Birthday: '' };
-
   constructor(
     public fetchApiData: FetchApiDataService,
-    public snackBar: MatSnackBar,
-    public router: Router 
-  ) { }
-
-  ngOnInit(): void {
-    this.getMovies();
+    public router: Router
+  ) {
+    this.userData = JSON.parse(localStorage.getItem("user") || "");
   }
 
-  getMovies(): void {
-    this.fetchApiData.getAllMovies().subscribe((resp: any) => {
-      this.movies = resp;
+  ngOnInit(): void {
+    this.getUser();
+  }
+
+  updateUser(): void {
+    this.fetchApiData.editUser(this.userData, {
+      Name: this.userData.Name,
+      Password: this.userData.Password,
+      Email: this.userData.Email,
+      Birthday: this.userData.Birthday
+    }).subscribe((res: any) => {
+      this.userData = {
+        ...res,
+        id: res._id,
+        password: this.userData.Password,
+        token: this.userData.token,
+      };
+      localStorage.setItem("user", JSON.stringify(this.userData));
       this.getFavoriteMovies();
-    });
+    }, (err: any) => {
+      console.log(err);
+    })
+  }
+
+  getUser(): void {
+    this.fetchApiData.getUser().subscribe((res: any) => {
+      this.userData = {
+        ...res,
+        id: res._id,
+        password: this.userData.Password,
+        token: this.userData.token,
+      };
+      localStorage.setItem("user", JSON.stringify(this.userData));
+      this.getFavoriteMovies();
+    }, (err: any) => {
+      console.log(err);
+    })
   }
 
   getFavoriteMovies(): void {
-    const user = localStorage.getItem('user') || '';
-    this.fetchApiData.getUser(user).subscribe((resp: any) => {
-      this.favoriteMovies = resp.FavoriteMovies;
-    });
+    this.fetchApiData.getAllMovies().subscribe((res: any) => {
+      this.favoriteMovies = res.filter((movie: any) => {
+        return this.userData.FavoriteMovies.includes(movie._id);
+      });
+    }
+      , (err: any) => {
+        console.log(err);
+      }
+    )
   }
 
-  addFavoriteMovie(movieId: string): void {
-    const user = localStorage.getItem('user') || '';
-    this.fetchApiData.addUserFavoriteMovies(user, movieId).subscribe(() => {
+  removeFavoriteMovie(movie: any): void {
+    this.fetchApiData.deleteUserFavoriteMovie(this.userData._id, movie.title).subscribe((res: any) => {
+      this.userData.FavoriteMovies = res.FavoriteMovies;
       this.getFavoriteMovies();
-      this.snackBar.open('Added to favorites', 'OK', {
-        duration: 2000
-      });
-    });
+    }, (err: any) => {
+      console.log(err);
+    })
   }
 
-  removeFavoriteMovie(movieId: string): void {
-    const user = localStorage.getItem('user') || '';
-    this.fetchApiData.deleteUserFavoriteMovie(user, movieId).subscribe(() => {
-      this.getFavoriteMovies();
-      this.snackBar.open('Removed from favorites', 'OK', {
-        duration: 2000
-      });
-    });
-  }
-
-  editUser(): void {
-    this.router.navigate(['profile/edit']);
-  }
-
-  updateProfile(): void {
-    const user = localStorage.getItem('user') || '';
-    this.fetchApiData.editUser(user, this.userData).subscribe(() => {
-      this.snackBar.open('Profile updated', 'OK', {
-        duration: 2000
-      });
-    });
-  }
-
-  deleteUser(): void {
-    const user = localStorage.getItem('user') || '';
-    this.fetchApiData.deleteUser(user).subscribe(() => {
-      localStorage.clear();
-      this.router.navigate(['welcome']);
-      this.snackBar.open('User deleted', 'OK', {
-        duration: 2000
-      });
-    });
+  logout(): void {
+    localStorage.clear();
+    this.router.navigate(['welcome']);
   }
 }

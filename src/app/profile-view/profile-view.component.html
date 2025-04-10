@@ -1,5 +1,5 @@
 <h1>
-    Hello, {{ user.name }}!
+    Hello, {{ userData.name }}!
 </h1>
 
 <mat-card>
@@ -11,7 +11,7 @@
             <mat-form-field>
                 <input
                 matInput
-                [(ngModel)]="user.name"
+                [(ngModel)]="userData.name"
                 placeholder="Name"
                 type="text"
                 name="Name"
@@ -21,7 +21,7 @@
             <mat-form-field>
                 <input
                 matInput
-                [(ngModel)]="user.email"
+                [(ngModel)]="userData.email"
                 type="email"
                 placeholder="Email"
                 name="Email"
@@ -31,7 +31,7 @@
             <mat-form-field>
                 <input
                 matInput
-                [(ngModel)]="user.birthday"
+                [(ngModel)]="userData.birthday"
                 type="date"
                 placeholder="Birthday"
                 name="Birthday"
@@ -42,7 +42,7 @@
     <mat-card-actions>
         <button
         mat-raised-button
-        (click)="updateProfile()"
+        (click)="updateUser()"
         color="primary"
         >
         Update

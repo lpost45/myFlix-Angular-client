@@ -14,8 +14,27 @@ const apiUrl = 'https://logan-myflix-30a490a6c5c0.herokuapp.com/';
   providedIn: 'root',
 })
 export class FetchApiDataService {
-  getUser(user: string): Observable<any> {
-    return this.http.get<any>(`/api/users/${user}`);
+  getUserById(userId: string) {
+    const token = localStorage.getItem('token');
+    return this.http
+      .get<HttpResponse<any>>(apiUrl + 'users/' + userId, {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token,
+        }),
+      })
+      .pipe(map(this.extractResponseData), catchError(this.handleError));
+  }
+
+  getUser() {
+    const token = localStorage.getItem('token');
+    let user = localStorage.getItem('user');
+    return this.http
+      .get<HttpResponse<any>>(apiUrl + 'users/' + user, {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token,
+        }),
+      })
+      .pipe(map(this.extractResponseData), catchError(this.handleError));
   }
   // Inject the HttpClient module to the constructor params
   // This will provide HttpClient to the entire class, making it available via this.http

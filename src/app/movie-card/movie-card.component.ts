@@ -35,29 +35,35 @@ export class MovieCardComponent {
     });
   }
 
-  addFavoriteMovie(movieId: string): void {
-    const user = localStorage.getItem('user') || '';
-    this.fetchApiData
-      .addUserFavoriteMovies(user, movieId)
-      .subscribe(() => {
-        this.getMovies();
-        this.snackBar.open('Added to favorites', 'OK', {
-          duration: 2000,
-        });
-      });
-  }
+  modifyFavoriteMovies(movie: any): void {
+    let user = JSON.parse(localStorage.getItem("user") || "");
+    let icon = document.getElementById(`${movie._id}-favorite-icon`);
 
-  removeFavoriteMovie(movieId: string): void {
-    const user = localStorage.getItem('user') || '';
-    this.fetchApiData
-      .deleteUserFavoriteMovie(user, movieId)
-      .subscribe(() => {
-        this.getMovies();
-        this.snackBar.open('Removed from favorites', 'OK', {
-          duration: 2000,
-        });
-      });
-  }
+    if (user.favoriteMovies.includes(movie._id)) {
+        this.fetchApiData.deleteUserFavoriteMovie(user.id, movie.title).subscribe(res => {
+            icon?.setAttribute("fontIcon", "favorite_border");
+
+            console.log("del success")
+            console.log(res);
+            user.favoriteMovies = res.favoriteMovies;
+            localStorage.setItem("user", JSON.stringify(user));
+        }, err => {
+            console.error(err)
+        })
+    } else {
+        this.fetchApiData.addUserFavoriteMovies(user.id, movie.title).subscribe(res => {
+            icon?.setAttribute("fontIcon", "favorite");
+
+            console.log("add success")
+            console.log(res);
+            user.favoriteMovies = res.favoriteMovies;
+            localStorage.setItem("user", JSON.stringify(user));
+        }, err => {
+            console.error(err)
+        })
+    }
+    localStorage.setItem("user", JSON.stringify(user));
+}
 
   openSnackBar(message: string, action: string): void {
     this.snackBar.open(message, action, {
@@ -95,4 +101,19 @@ export class MovieCardComponent {
       width: '500px',
     });
   }
+  
+  // This function will allow the user to log out
+  logout(): void {
+    localStorage.clear();
+    this.router.navigate(['welcome']);
+    this.snackBar.open('Logged out successfully', 'OK', {
+      duration: 2000,
+    });
+  }
+
+  // This function will open the user profile dialog
+  openUserProfileDialog(): void {
+    this.router.navigate(['profile']);
+    };
 }
+

@@ -35,10 +35,4 @@ export class WelcomePageComponent {
       width: '500px'
     });
   }
-
-  openProfileDialog(): void {
-    this.dialog.open(ProfileViewComponent, {
-      width: '500px'
-    });
-  }
 }
