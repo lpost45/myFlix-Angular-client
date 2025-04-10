@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { MessageBoxComponent } from '../message-box/message-box.component';
+import { title } from 'process';
 
 @Component({
   selector: 'app-movie-card',
@@ -65,37 +66,25 @@ export class MovieCardComponent {
   }
 
   // This function will open the movie details dialog
-  openDetailsDialog(
-    title: string,
-    description: string,
-    imagePath: string
-  ): void {
+  openDetailsDialog(movie: any): void {
     this.dialog.open(MessageBoxComponent, {
-      data: { title, description, imagePath },
+      data: { title: movie.Title, content: movie.Description },
       width: '500px',
     });
   }
 
   // This function will open the genre details dialog
-  openGenreDialog(
-    title: string,
-    description: string,
-  ): void {
+  openGenreDialog(movie: any): void {
     this.dialog.open(MessageBoxComponent, {
-      data: { title, description },
+      data: { title: movie.Genre.Name, content: movie.Genre.Description },
       width: '500px',
     });
   }
 
   // This function will open the director details dialog
-  openDirectorDialog(
-    name: string,
-    bio: string,
-    birth: string,
-    death: string,
-  ): void {
+  openDirectorDialog(movie: any): void {
     this.dialog.open(MessageBoxComponent, {
-      data: { name, bio, birth, death },
+      data: { title: movie.Director.Name, content: String(movie.Director.Bio) },
       width: '500px',
     });
   }
