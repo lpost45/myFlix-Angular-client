@@ -42,4 +42,8 @@ throw new Error('Method not implemented.');
 
   ngOnInit(): void {
   }
+
+  close(): void {
+    this.dialogRef.close();
+  }
 }

@@ -2,6 +2,23 @@
     Hello, {{ userData.name }}!
 </h1>
 
+<nav>
+    <button
+        mat-raised-button
+        (click)="goToMovies()"
+        color="primary"
+    >
+        Movies
+    </button>
+    <button
+        mat-reaised-button
+        (click)="logout()"
+        color="primary"
+    >
+        Logout
+    </button>
+</nav>
+
 <mat-card>
     <mat-card-header>
         <mat-card-title>Profile</mat-card-title>

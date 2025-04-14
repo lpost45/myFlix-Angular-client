@@ -96,4 +96,8 @@ export class ProfileViewComponent implements OnInit {
     localStorage.clear();
     this.router.navigate(['welcome']);
   }
+
+  goToMovies(): void {
+    this.router.navigate(['movies']);
+  }
 }
