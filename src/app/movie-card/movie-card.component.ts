@@ -36,34 +36,42 @@ export class MovieCardComponent {
   }
 
   modifyFavoriteMovies(movie: any): void {
-    let user = JSON.parse(localStorage.getItem("user") || "");
+    let user = JSON.parse(localStorage.getItem('user') || '');
+    console.log('user', user);
     let icon = document.getElementById(`${movie._id}-favorite-icon`);
 
-    if (user.favoriteMovies.includes(movie._id)) {
-        this.fetchApiData.deleteUserFavoriteMovie(user.id, movie.title).subscribe(res => {
-            icon?.setAttribute("fontIcon", "favorite_border");
+    if (user.FavMovies.includes(movie._id)) {
+      this.fetchApiData.deleteUserFavoriteMovie(user.id, movie._id).subscribe(
+        (res) => {
+          icon?.setAttribute('fontIcon', 'favorite_border');
 
-            console.log("del success")
-            console.log(res);
-            user.favoriteMovies = res.favoriteMovies;
-            localStorage.setItem("user", JSON.stringify(user));
-        }, err => {
-            console.error(err)
-        })
+          console.log('del success');
+          console.log(res);
+          user = res;
+          console.log('user', user);
+          localStorage.setItem('user', JSON.stringify(user));
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
     } else {
-        this.fetchApiData.addUserFavoriteMovies(user.id, movie.title).subscribe(res => {
-            icon?.setAttribute("fontIcon", "favorite");
+      this.fetchApiData.addUserFavoriteMovies(user.id, movie._id).subscribe(
+        (res) => {
+          icon?.setAttribute('fontIcon', 'favorite');
 
-            console.log("add success")
-            console.log(res);
-            user.favoriteMovies = res.favoriteMovies;
-            localStorage.setItem("user", JSON.stringify(user));
-        }, err => {
-            console.error(err)
-        })
+          console.log('add success');
+          console.log(res);
+          // user.FavMovies = res.favoriteMovies;
+          localStorage.setItem('user', JSON.stringify(user));
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
     }
-    localStorage.setItem("user", JSON.stringify(user));
-}
+    localStorage.setItem('user', JSON.stringify(user));
+  }
 
   openSnackBar(message: string, action: string): void {
     this.snackBar.open(message, action, {
@@ -101,7 +109,7 @@ export class MovieCardComponent {
       width: '500px',
     });
   }
-  
+
   // This function will allow the user to log out
   logout(): void {
     localStorage.clear();
@@ -114,6 +122,5 @@ export class MovieCardComponent {
   // This function will open the user profile dialog
   openUserProfileDialog(): void {
     this.router.navigate(['profile']);
-    };
+  }
 }
-

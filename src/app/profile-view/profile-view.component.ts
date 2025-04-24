@@ -17,19 +17,16 @@ import { FormsModule } from '@angular/forms';
     MatDialogContent,
     MatIconModule,
     MatFormFieldModule,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './profile-view.component.html',
-  styleUrls: ['./profile-view.component.css']
+  styleUrls: ['./profile-view.component.css'],
 })
 export class ProfileViewComponent implements OnInit {
   userData: any = {};
   favoriteMovies: any[] = [];
-  constructor(
-    public fetchApiData: FetchApiDataService,
-    public router: Router
-  ) {
-    this.userData = JSON.parse(localStorage.getItem("user") || "");
+  constructor(public fetchApiData: FetchApiDataService, public router: Router) {
+    this.userData = JSON.parse(localStorage.getItem('user') || '');
   }
 
   ngOnInit(): void {
@@ -37,64 +34,78 @@ export class ProfileViewComponent implements OnInit {
   }
 
   updateUser(): void {
-    this.fetchApiData.editUser(this.userData, {
-      Name: this.userData.Name,
-      Password: this.userData.Password,
-      Email: this.userData.Email,
-      Birthday: this.userData.Birthday
-    }).subscribe((res: any) => {
-      this.userData = {
-        ...res,
-        id: res._id,
-        password: this.userData.Password,
-        token: this.userData.token,
-      };
-      localStorage.setItem("user", JSON.stringify(this.userData));
-      this.getFavoriteMovies();
-    }, (err: any) => {
-      console.log(err);
-    })
+    this.fetchApiData
+      .editUser(this.userData, {
+        Name: this.userData.Name,
+        Password: this.userData.Password,
+        Email: this.userData.Email,
+        Birthday: this.userData.Birthday,
+      })
+      .subscribe(
+        (res: any) => {
+          this.userData = {
+            ...res,
+            id: res._id,
+            password: this.userData.Password,
+            token: this.userData.token,
+          };
+          localStorage.setItem('user', JSON.stringify(this.userData));
+          this.getFavoriteMovies();
+        },
+        (err: any) => {
+          console.log(err);
+        }
+      );
   }
 
   getUser(): void {
-    this.fetchApiData.getUser().subscribe((res: any) => {
-      this.userData = {
-        ...res,
-        id: res._id,
-        password: this.userData.Password,
-        token: this.userData.token,
-      };
-      localStorage.setItem("user", JSON.stringify(this.userData));
-      this.getFavoriteMovies();
-    }, (err: any) => {
-      console.log(err);
-    })
+    this.fetchApiData.getUser().subscribe(
+      (res: any) => {
+        this.userData = {
+          ...res,
+          id: res._id,
+          password: this.userData.Password,
+          token: this.userData.token,
+        };
+        localStorage.setItem('user', JSON.stringify(this.userData));
+        this.getFavoriteMovies();
+      },
+      (err: any) => {
+        console.log(err);
+      }
+    );
   }
 
   getFavoriteMovies(): void {
-    this.fetchApiData.getAllMovies().subscribe((res: any) => {
-      this.favoriteMovies = res.filter((movie: any) => {
-        return this.userData.FavoriteMovies.includes(movie._id);
-      });
-    }
-      , (err: any) => {
+    this.fetchApiData.getAllMovies().subscribe(
+      (res: any) => {
+        this.favoriteMovies = res.filter((movie: any) => {
+          return this.userData.FavoriteMovies.includes(movie._id);
+        });
+      },
+      (err: any) => {
         console.log(err);
       }
-    )
+    );
   }
 
   removeFavoriteMovie(movie: any): void {
-    this.fetchApiData.deleteUserFavoriteMovie(this.userData._id, movie.title).subscribe((res: any) => {
-      this.userData.FavoriteMovies = res.FavoriteMovies;
-      this.getFavoriteMovies();
-    }, (err: any) => {
-      console.log(err);
-    })
+    this.fetchApiData
+      .deleteUserFavoriteMovie(this.userData._id, movie.title)
+      .subscribe(
+        (res: any) => {
+          this.userData.FavoriteMovies = res.FavoriteMovies;
+          this.getFavoriteMovies();
+        },
+        (err: any) => {
+          console.log(err);
+        }
+      );
   }
 
   logout(): void {
     localStorage.clear();
-    this.router.navigate(['welcome']);
+    this.router.navigate(['']);
   }
 
   goToMovies(): void {
