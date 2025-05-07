@@ -4,8 +4,7 @@ import { MovieCardComponent } from './movie-card/movie-card.component';
 import { ProfileViewComponent } from './profile-view/profile-view.component';
 
 export const routes: Routes = [
-    { path: 'welcome', component: WelcomePageComponent },
-    { path: 'movies', component: MovieCardComponent },
-    { path: 'profile', component: ProfileViewComponent },
-    {path: '', redirectTo: 'welcome', pathMatch: 'full'}
+  { path: '', component: WelcomePageComponent },
+  { path: 'movies', component: MovieCardComponent },
+  { path: 'profile', component: ProfileViewComponent },
 ];
