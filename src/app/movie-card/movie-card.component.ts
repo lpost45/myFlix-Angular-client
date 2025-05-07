@@ -17,6 +17,7 @@ import { title } from 'process';
 })
 export class MovieCardComponent {
   movies: any[] = [];
+  favoriteMovies: any[] = [];
   constructor(
     public fetchApiData: FetchApiDataService,
     public snackBar: MatSnackBar,
