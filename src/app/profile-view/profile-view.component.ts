@@ -94,7 +94,7 @@ export class ProfileViewComponent implements OnInit {
 
   logout(): void {
     localStorage.clear();
-    this.router.navigate(['welcome']);
+    this.router.navigate(['']);
   }
 
   goToMovies(): void {

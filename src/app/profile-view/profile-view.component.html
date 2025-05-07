@@ -1,5 +1,5 @@
 <h1>
-    Hello, {{ userData.name }}!
+    Hello, {{ userData.Name }}!
 </h1>
 
 <nav>
@@ -28,7 +28,7 @@
             <mat-form-field>
                 <input
                 matInput
-                [(ngModel)]="userData.name"
+                [(ngModel)]="userData.Name"
                 placeholder="Name"
                 type="text"
                 name="Name"
@@ -38,7 +38,17 @@
             <mat-form-field>
                 <input
                 matInput
-                [(ngModel)]="userData.email"
+                [(ngModel)]="userData.Password"
+                type="password"
+                placeholder="Password"
+                name="Password"
+                required
+                >
+            </mat-form-field>
+            <mat-form-field>
+                <input
+                matInput
+                [(ngModel)]="userData.Email"
                 type="email"
                 placeholder="Email"
                 name="Email"
@@ -48,7 +58,7 @@
             <mat-form-field>
                 <input
                 matInput
-                [(ngModel)]="userData.birthday"
+                [(ngModel)]="userData.Birthday"
                 type="date"
                 placeholder="Birthday"
                 name="Birthday"

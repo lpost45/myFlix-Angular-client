@@ -39,13 +39,13 @@ export class MovieCardComponent {
     let user = JSON.parse(localStorage.getItem("user") || "");
     let icon = document.getElementById(`${movie._id}-favorite-icon`);
 
-    if (user.favoriteMovies.includes(movie._id)) {
+    if (user.FavMovies.includes(movie._id)) {
         this.fetchApiData.deleteUserFavoriteMovie(user.id, movie.title).subscribe(res => {
             icon?.setAttribute("fontIcon", "favorite_border");
 
             console.log("del success")
             console.log(res);
-            user.favoriteMovies = res.favoriteMovies;
+            user.FavMovies = res.favoriteMovies;
             localStorage.setItem("user", JSON.stringify(user));
         }, err => {
             console.error(err)
@@ -56,7 +56,7 @@ export class MovieCardComponent {
 
             console.log("add success")
             console.log(res);
-            user.favoriteMovies = res.favoriteMovies;
+            user.FavMovies = res.favoriteMovies;
             localStorage.setItem("user", JSON.stringify(user));
         }, err => {
             console.error(err)
@@ -105,7 +105,7 @@ export class MovieCardComponent {
   // This function will allow the user to log out
   logout(): void {
     localStorage.clear();
-    this.router.navigate(['welcome']);
+    this.router.navigate(['']);
     this.snackBar.open('Logged out successfully', 'OK', {
       duration: 2000,
     });

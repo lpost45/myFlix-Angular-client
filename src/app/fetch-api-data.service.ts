@@ -129,7 +129,7 @@ export class FetchApiDataService {
     let user = localStorage.getItem('user');
     return this.http
       .get<HttpResponse<any>>(
-        apiUrl + 'users/' + user + '/favorites/' + movieId,
+        apiUrl + 'users/' + user + '/movies/' + movieId,
         {
           headers: new HttpHeaders({
             Authorization: 'Bearer ' + token,
@@ -143,8 +143,8 @@ export class FetchApiDataService {
     const token = localStorage.getItem('token');
     let user = localStorage.getItem('user');
     return this.http
-      .put<HttpResponse<any>>(
-        apiUrl + 'users/' + user + '/favorites/' + movieId,
+      .post<HttpResponse<any>>(
+        apiUrl + 'users/' + userId + '/movies/' + movieId,
         {
           headers: new HttpHeaders({
             Authorization: 'Bearer ' + token,
@@ -187,12 +187,13 @@ export class FetchApiDataService {
       .pipe(map(this.extractResponseData), catchError(this.handleError));
   }
 
+
   public deleteUserFavoriteMovie(userId: string, movieId: string) {
     const token = localStorage.getItem('token');
     let user = localStorage.getItem('user');
     return this.http
       .delete<HttpResponse<any>>(
-        apiUrl + 'users/' + user + '/favorites/' + movieId,
+        apiUrl + 'users/' + userId + '/favorites/' + movieId,
         {
           headers: new HttpHeaders({
             Authorization: 'Bearer ' + token,
