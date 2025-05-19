@@ -47,10 +47,11 @@
                     Synopsis
                 </button>
                 <mat-icon
-                    fontIcon="{{ movie.IsFavorite ? 'favorite' : 'favorite_border' }}"
-                    id="{{movie._id}}-favorite-icon"
+                    [fontIcon]="movie.IsFavorite ? 'favorite' : 'favorite_border'"
                     (click)="modifyFavoriteMovies(movie)"
-                    >favorite_border</mat-icon>
+                    id="{{ movie._id }}-favorite-icon"
+                ></mat-icon>
+
             </mat-card-actions>
         </mat-card>
     </div>

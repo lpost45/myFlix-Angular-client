@@ -50,6 +50,7 @@ export class MovieCardComponent {
           console.log(res);
           user = res;
           console.log('user', user);
+          movie.IsFavorite = false;
           localStorage.setItem('user', JSON.stringify(user));
         },
         (err) => {
@@ -63,7 +64,7 @@ export class MovieCardComponent {
 
           console.log('add success');
           console.log(res);
-          // user.FavMovies = res.favoriteMovies;
+          movie.IsFavorite = true;
           localStorage.setItem('user', JSON.stringify(user));
         },
         (err) => {
