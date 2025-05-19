@@ -43,6 +43,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "netlify-cli": "^20.1.1",
+    "typedoc": "^0.28.4",
     "typescript": "~5.7.2"
   }
 }
