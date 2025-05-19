@@ -30,18 +30,22 @@ export class MovieCardComponent {
   }
 
   getMovies(): void {
-    this.fetchApiData.getAllMovies().subscribe((resp: any) => {
-      console.log('API Response:', resp);
-      this.movies = resp;
+    this.fetchApiData.getAllMovies().subscribe((movies) => {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      this.movies = movies.map((movie: any) => ({
+        ...movie,
+        IsFavorite: user.FavMovies.includes(movie._id)
+      }));
     });
-  }
+  }    
 
   modifyFavoriteMovies(movie: any): void {
     let user = JSON.parse(localStorage.getItem('user') || '');
     console.log('user', user);
     let icon = document.getElementById(`${movie._id}-favorite-icon`);
+    const isFavorite = user.FavMovies.includes(movie._id);
 
-    if (user.FavMovies.includes(movie._id)) {
+    if (isFavorite) {
       this.fetchApiData.deleteUserFavoriteMovie(user.id, movie._id).subscribe(
         (res) => {
           icon?.setAttribute('fontIcon', 'favorite_border');
@@ -51,6 +55,7 @@ export class MovieCardComponent {
           user = res;
           console.log('user', user);
           movie.IsFavorite = false;
+          user.FavMovies = res.FavMovies || res.FavoriteMovies || [];
           localStorage.setItem('user', JSON.stringify(user));
         },
         (err) => {
@@ -65,6 +70,7 @@ export class MovieCardComponent {
           console.log('add success');
           console.log(res);
           movie.IsFavorite = true;
+          user.FavMovies = res.FavMovies || res.FavoriteMovies || [];
           localStorage.setItem('user', JSON.stringify(user));
         },
         (err) => {
