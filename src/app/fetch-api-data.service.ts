@@ -141,10 +141,15 @@ export class FetchApiDataService {
 
   public addUserFavoriteMovies(userId: string | null, movieId: string) {
     const token = localStorage.getItem('token');
-    let user = localStorage.getItem('user');
+    let user: any = localStorage.getItem('user');
+    // console.log('user', user);
+    user = JSON.parse(user);
+    // console.log('user', user);
     return this.http
       .post<HttpResponse<any>>(
-        apiUrl + 'users/' + userId + '/movies/' + movieId,
+        apiUrl + 'users/' + user.Name + '/movies/' + movieId,
+        {},
+        // /users/:Name/movies/:MovieID
         {
           headers: new HttpHeaders({
             Authorization: 'Bearer ' + token,
@@ -166,12 +171,16 @@ export class FetchApiDataService {
     const token = localStorage.getItem('token');
     let user = localStorage.getItem('user');
     return this.http
-      .put<HttpResponse<any>>(apiUrl + 'users/' + user, userDetails, {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        }),
-      })
+      .put<HttpResponse<any>>(
+        apiUrl + 'users/' + userDetails.Name,
+        userDetails,
+        {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          }),
+        }
+      )
       .pipe(map(this.extractResponseData), catchError(this.handleError));
   }
 
@@ -190,10 +199,13 @@ export class FetchApiDataService {
 
   public deleteUserFavoriteMovie(userId: string, movieId: string) {
     const token = localStorage.getItem('token');
-    let user = localStorage.getItem('user');
+    let user: any = localStorage.getItem('user');
+    user = JSON.parse(user);
+    // console.log('user', user);
+    // console.log('movieId', movieId);
     return this.http
       .delete<HttpResponse<any>>(
-        apiUrl + 'users/' + userId + '/favorites/' + movieId,
+        apiUrl + 'users/' + user.Name + '/movies/' + movieId,
         {
           headers: new HttpHeaders({
             Authorization: 'Bearer ' + token,
@@ -214,7 +226,7 @@ export class FetchApiDataService {
     return throwError('Something bad happened; please try again later.');
   }
 
-  private extractResponseData(res: HttpResponse<any>): any {
-    return res.body || {};
+  private extractResponseData(res: any): any {
+    return res;
   }
 }
